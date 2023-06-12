@@ -3,20 +3,35 @@ package com.example.myfirstgameprojectkotlin
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import androidx.core.content.ContextCompat
 
 class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
+    private var player: Player
     private val gameLoop: GameLoop
-    private val context: Context
-
     init {
         val surfaceHolder = holder
         surfaceHolder.addCallback(this)
-        this.context = context
         gameLoop = GameLoop(this, surfaceHolder)
+        player = Player(getContext(),500F,500F,30F);
         isFocusable = true
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+       when(event?.action){
+           MotionEvent.ACTION_DOWN -> {
+               player.setPosition(event.x, event.y)
+               return true
+           }
+           MotionEvent.ACTION_MOVE->{
+               player.setPosition(event.x, event.y)
+               return true
+           }
+
+       }
+        return super.onTouchEvent(event)
     }
 
     override fun surfaceCreated(surfaceHolder: SurfaceHolder) {
@@ -29,6 +44,7 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         super.draw(canvas)
         drawUPS(canvas)
         drawFPS(canvas)
+        player.draw(canvas)
     }
 
     private fun drawUPS(canvas: Canvas) {
@@ -49,5 +65,7 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         canvas.drawText("FPS: $averageFPS", 100f, 200f, paint)
     }
 
-    fun update() {}
+    fun update() {
+        player.update()
+    }
 }
