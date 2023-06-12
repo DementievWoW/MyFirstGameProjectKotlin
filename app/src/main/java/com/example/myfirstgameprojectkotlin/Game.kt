@@ -9,15 +9,17 @@ import android.view.SurfaceView
 import androidx.core.content.ContextCompat
 
 class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
-    private var joystick: Joystick
-    private var player: Player
-    private val gameLoop: GameLoop
+    private val enemy: Enemy
+    private val joystick: Joystick
+    private val player: Player
+    private var gameLoop: GameLoop
     init {
         val surfaceHolder = holder
         surfaceHolder.addCallback(this)
         gameLoop = GameLoop(this, surfaceHolder)
         joystick = Joystick(475,600,70,40)
         player = Player(getContext(),500F,500F,30F);
+        enemy=Enemy()
         isFocusable = true
     }
 
