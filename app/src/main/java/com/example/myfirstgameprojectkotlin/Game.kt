@@ -9,12 +9,14 @@ import android.view.SurfaceView
 import androidx.core.content.ContextCompat
 
 class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
+    private var joystick: Joystick
     private var player: Player
     private val gameLoop: GameLoop
     init {
         val surfaceHolder = holder
         surfaceHolder.addCallback(this)
         gameLoop = GameLoop(this, surfaceHolder)
+        joystick = Joystick(475,600,70,40)
         player = Player(getContext(),500F,500F,30F);
         isFocusable = true
     }
@@ -22,11 +24,20 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
     override fun onTouchEvent(event: MotionEvent?): Boolean {
        when(event?.action){
            MotionEvent.ACTION_DOWN -> {
-               player.setPosition(event.x, event.y)
+               if (joystick.isPressed(event.x, event.y)){
+                   joystick.setIsPressed(true)
+               }
                return true
            }
            MotionEvent.ACTION_MOVE->{
-               player.setPosition(event.x, event.y)
+               if (joystick.getIsPressed()){
+                   joystick.setActuator(event.x, event.y)
+               }
+               return true
+           }
+           MotionEvent.ACTION_UP ->{
+               joystick.setIsPressed(false)
+               joystick.resetActuator()
                return true
            }
 
@@ -44,6 +55,7 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         super.draw(canvas)
         drawUPS(canvas)
         drawFPS(canvas)
+        joystick.draw(canvas)
         player.draw(canvas)
     }
 
@@ -66,6 +78,8 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
     }
 
     fun update() {
-        player.update()
+        joystick.update()
+        player.update(joystick)
+
     }
 }
