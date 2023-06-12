@@ -31,8 +31,8 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         drawFPS(canvas)
     }
 
-    fun drawUPS(canvas: Canvas) {
-        val averageUPS = java.lang.Double.toString(gameLoop.averageUPS)
+    private fun drawUPS(canvas: Canvas) {
+        val averageUPS = gameLoop.averageUPS.toString()
         val paint = Paint()
         val color = ContextCompat.getColor(context, R.color.purple_200)
         paint.color = color
@@ -40,8 +40,8 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         canvas.drawText("UPS: $averageUPS", 100f, 100f, paint)
     }
 
-    fun drawFPS(canvas: Canvas) {
-        val averageFPS = java.lang.Double.toString(gameLoop.averageFPS)
+    private fun drawFPS(canvas: Canvas) {
+        val averageFPS = gameLoop.averageFPS.toString()
         val paint = Paint()
         val color = ContextCompat.getColor(context, R.color.purple_200)
         paint.color = color
