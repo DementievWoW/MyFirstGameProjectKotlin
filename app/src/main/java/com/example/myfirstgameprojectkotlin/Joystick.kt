@@ -23,7 +23,7 @@ class Joystick(centerPositionX:Int, centerPositionY:Int,outerCircleRadius:Int,in
     init {
         outerCircleCenterPositionX=centerPositionX
         outerCircleCenterPositionY=centerPositionY
-        innerCircleCenterPositionX=centerPositionY
+        innerCircleCenterPositionX=centerPositionX
         innerCircleCenterPositionY=centerPositionY
         this.outerCircleRadius = outerCircleRadius
         this.innerCircleRadius = innerCircleRadius
@@ -66,8 +66,7 @@ class Joystick(centerPositionX:Int, centerPositionY:Int,outerCircleRadius:Int,in
 
     fun isPressed(touchPositionX: Float, touchPositionY: Float): Boolean {
 
-        joystickCenterToTouchDistance=
-            getDistance(touchPositionX, touchPositionY)
+        joystickCenterToTouchDistance=getDistance(touchPositionX, touchPositionY)
 
 
         return joystickCenterToTouchDistance < outerCircleRadius
@@ -89,15 +88,13 @@ class Joystick(centerPositionX:Int, centerPositionY:Int,outerCircleRadius:Int,in
     }
 
     fun setActuator(touchPositionX: Float, touchPositionY: Float) {
-        var deltaX  = touchPositionX - outerCircleCenterPositionX
-        var deltaY  = touchPositionY - outerCircleCenterPositionY
-        var deltaDistance=getDistance(deltaX,deltaY)
+        var deltaDistance=getDistance(touchPositionX,touchPositionY)
         if (deltaDistance<outerCircleRadius){
-            actuatorX = deltaX/outerCircleRadius
-            actuatorY = deltaY/outerCircleRadius
+            actuatorX = (touchPositionX - outerCircleCenterPositionX)/outerCircleRadius
+            actuatorY = (touchPositionY - outerCircleCenterPositionY)/outerCircleRadius
         }else{
-            actuatorX=deltaX/deltaDistance
-            actuatorY = deltaY/deltaDistance
+            actuatorX = (touchPositionX - outerCircleCenterPositionX)/deltaDistance
+            actuatorY = (touchPositionY - outerCircleCenterPositionY)/deltaDistance
         }
 
     }
