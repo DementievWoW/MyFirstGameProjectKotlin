@@ -107,12 +107,38 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         for(missile : Missile in missileList ){
             missile.update()
         }
+            //проверяем все взаимодействия врагов и снарядов
         var iteratorEnemy = enemyList.iterator()
         while (iteratorEnemy.hasNext()){
-            if(Circle.isColliding(iteratorEnemy.next(), player)){
+            var enemy: Circle=iteratorEnemy.next()
+            if(Circle.isColliding(enemy, player)){
                 iteratorEnemy.remove();
+                continue
             }
+            var iteratorMissile = missileList.iterator()
+            while (iteratorMissile.hasNext()){
+                var missile : Missile =  iteratorMissile.next()
+                //удалить заклинание, если оно столкнется с врагом
+                if (Circle.isColliding(missile, enemy)){
+                    iteratorMissile.remove()
+                    iteratorEnemy.remove()
+                    break
+                }
+            }
+
         }
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
