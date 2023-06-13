@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="Player">#FFFF00</color>
     <color name="Enemy">#FFF00000</color>
+    <color name="Missile">#FF03DAC5</color>
 </resources>

@@ -9,19 +9,18 @@ import android.view.SurfaceView
 import androidx.core.content.ContextCompat
 
 class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
-    private val enemy: Enemy
     private val joystick: Joystick
     private val player: Player
     private var gameLoop: GameLoop
     private var enemyList : MutableList<Enemy> = mutableListOf()
+    private var missileList : MutableList<Missile> = mutableListOf()
 
     init {
         val surfaceHolder = holder
         surfaceHolder.addCallback(this)
         gameLoop = GameLoop(this, surfaceHolder)
-        joystick = Joystick(475,600,40,20)
+        joystick = Joystick(475f,600f,40f,20f)
         player = Player(getContext(),joystick,500F,500F,30F)
-        enemy=Enemy(getContext(),player,200F,200F,30F)
         isFocusable = true
     }
 
@@ -29,8 +28,14 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         if (event != null) {
             when(event.action){
                 MotionEvent.ACTION_DOWN -> {
-                    if (joystick.isPressed(event.x, event.y)){
+                    if (joystick.getIsPressed()){
+                        missileList.add(Missile(context,player))
+                    }
+                   else if(joystick.isPressed(event.x, event.y)){
                         joystick.setIsPressed(true)
+                    }
+                    else{
+                        missileList.add(Missile(context,player))
                     }
                     return true
                 }
@@ -41,6 +46,7 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
                     return true
                 }
                 MotionEvent.ACTION_UP ->{
+
                     joystick.setIsPressed(false)
                     joystick.resetActuator()
                     return true
@@ -66,6 +72,9 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         for (enemy : Enemy in enemyList){
             enemy.draw(canvas)
         }
+        for(missile : Missile in missileList ){
+            missile.draw(canvas)
+        }
     }
 
     private fun drawUPS(canvas: Canvas) {
@@ -89,12 +98,14 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
     fun update() {
         joystick.update()
         player.update()
-        enemy.update()
         if (Enemy.readyToSpawn()){
             enemyList.add(Enemy(context,player))
         }
         for(enemy:Enemy in enemyList ){
                 enemy.update()
+        }
+        for(missile : Missile in missileList ){
+            missile.update()
         }
         var iteratorEnemy = enemyList.iterator()
         while (iteratorEnemy.hasNext()){
