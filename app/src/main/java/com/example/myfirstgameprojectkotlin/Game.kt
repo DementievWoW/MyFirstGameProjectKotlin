@@ -9,6 +9,7 @@ import android.view.SurfaceView
 import androidx.core.content.ContextCompat
 
 class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
+    private var numberOfSpellsToCast: Int=0
     private var joystickPointerId: Int=0
     private val joystick: Joystick
     private val player: Player
@@ -32,14 +33,14 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
                 MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN -> {
 
                     if (joystick.getIsPressed()){
-                        missileList.add(Missile(context,player))
+                       numberOfSpellsToCast++
                     }
                    else if(joystick.isPressed(event.x, event.y)){
                        joystickPointerId=event.getPointerId(event.actionIndex)
                         joystick.setIsPressed(true)
                     }
                     else{
-                        missileList.add(Missile(context,player))
+                        numberOfSpellsToCast++
                     }
                     return true
                 }
@@ -109,6 +110,10 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         }
         for(enemy:Enemy in enemyList ){
                 enemy.update()
+        }
+        while (numberOfSpellsToCast>0){
+            missileList.add(Missile(context,player))
+            numberOfSpellsToCast--
         }
         for(missile : Missile in missileList ){
             missile.update()
