@@ -9,6 +9,7 @@ import android.view.SurfaceView
 import androidx.core.content.ContextCompat
 
 class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
+    private var joystickPointerId: Int=0
     private val joystick: Joystick
     private val player: Player
     private var gameLoop: GameLoop
@@ -24,14 +25,17 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         isFocusable = true
     }
 
+
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event != null) {
-            when(event.action){
-                MotionEvent.ACTION_DOWN -> {
+            when(event.actionMasked){
+                MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN -> {
+
                     if (joystick.getIsPressed()){
                         missileList.add(Missile(context,player))
                     }
                    else if(joystick.isPressed(event.x, event.y)){
+                       joystickPointerId=event.getPointerId(event.actionIndex)
                         joystick.setIsPressed(true)
                     }
                     else{
@@ -45,10 +49,12 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
                     }
                     return true
                 }
-                MotionEvent.ACTION_UP ->{
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_POINTER_DOWN ->{
+                    if(joystickPointerId==event.getPointerId(event.actionIndex)){
+                        joystick.setIsPressed(false)
+                        joystick.resetActuator()
 
-                    joystick.setIsPressed(false)
-                    joystick.resetActuator()
+                    }
                     return true
                 }
 
