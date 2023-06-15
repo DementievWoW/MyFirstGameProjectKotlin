@@ -2,7 +2,7 @@ package com.example.myfirstgameprojectkotlin.graphics
 
 import android.graphics.Canvas
 
-class SpriteSVG {
+class Sprite {
     fun draw(canvas: Canvas) {
 
     }
