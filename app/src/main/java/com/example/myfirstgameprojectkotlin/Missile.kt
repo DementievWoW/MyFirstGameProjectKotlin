@@ -4,11 +4,12 @@ import android.content.Context
 import androidx.core.content.ContextCompat
 
 //Missile снаряд
-class Missile(context: Context, missileCaster: Player, positionX: Float, positionY: Float, radius: Float)
-    :Circle(context, positionX, positionY, radius) {
+class Missile(context: Context,color:Int, missileCaster: Player, positionX: Float, positionY: Float, radius: Float)
+    :Circle(context,color, positionX, positionY, radius) {
     constructor(context: Context, missileCaster: Player) : this(
         context = context,
         missileCaster =missileCaster,
+        color = ContextCompat.getColor(context, R.color.Missile),
         positionX = missileCaster.getPositionX(),
         positionY = missileCaster.getPositionY(),
         radius = 30f

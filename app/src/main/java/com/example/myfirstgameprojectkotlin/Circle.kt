@@ -6,13 +6,13 @@ import android.graphics.Color.BLUE
 import android.graphics.Paint
 import androidx.core.content.ContextCompat
 
-abstract class Circle(context: Context, positionX: Float, positionY: Float, radius : Float) : GameObject(positionX, positionY){
+abstract class Circle(context: Context,color : Int, positionX: Float, positionY: Float, radius : Float) : GameObject(positionX, positionY){
 
     var radius : Float = 0.0f
     private var paint : Paint = Paint()
     init {
         this.radius=radius
-        paint.color=BLUE
+        this.paint.color=color
     }
     override fun draw(canvas: Canvas) {
         canvas.drawCircle(positionX, positionY,radius,paint)

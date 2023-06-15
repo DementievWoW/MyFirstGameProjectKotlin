@@ -1,13 +1,15 @@
 package com.example.myfirstgameprojectkotlin
 
 import android.content.Context
+import androidx.core.content.ContextCompat
 
 
-class Enemy (context: Context,player :Player, positionX: Float, positionY: Float, radius : Float)
-    :Circle(context, positionX,positionY,radius){
+class Enemy (context: Context,color: Int,player :Player, positionX: Float, positionY: Float, radius : Float)
+    :Circle(context,color, positionX,positionY,radius){
     constructor(context: Context, player: Player) : this(
         context = context,
         player = player,
+        color = ContextCompat.getColor(context, R.color.Enemy),
         positionX = (Math.random()*1000).toFloat(),
         positionY = (Math.random()*1000).toFloat(),
         radius = 30f
@@ -15,12 +17,12 @@ class Enemy (context: Context,player :Player, positionX: Float, positionY: Float
 
     companion object {
         fun readyToSpawn(): Boolean {
-            if(updatesUntilNextSpawn<=0){
+            return if(updatesUntilNextSpawn<=0){
                 updatesUntilNextSpawn+=UPDATES_PER_SPAWN
-               return true
+                true
             } else{
                 updatesUntilNextSpawn--
-                return false
+                false
             }
         }
 

@@ -9,6 +9,7 @@ import android.view.SurfaceView
 import androidx.core.content.ContextCompat
 
 class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
+    private val gameOver: GameOver
     private var numberOfSpellsToCast: Int=0
     private var joystickPointerId: Int=0
     private val joystick: Joystick
@@ -18,11 +19,15 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
     private var missileList : MutableList<Missile> = mutableListOf()
 
     init {
+        //Surface and callback
         val surfaceHolder = holder
         surfaceHolder.addCallback(this)
         gameLoop = GameLoop(this, surfaceHolder)
+        //инициализация интерфейсов
+        gameOver = GameOver(context)
         joystick = Joystick(475f,600f,40f,20f)
-        player = Player(getContext(),joystick,500F,500F,30F)
+        //инициализация игровых обьектов
+        player = Player(getContext(),ContextCompat.getColor(context, R.color.Player),joystick,500F,500F,30F)
         isFocusable = true
     }
 
@@ -82,6 +87,10 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         for(missile : Missile in missileList ){
             missile.draw(canvas)
         }
+        // если hp<=0 gameOver!
+        if (player.getHealthPoints()<=0){
+            gameOver.draw(canvas)
+        }
     }
 
     private fun drawUPS(canvas: Canvas) {
@@ -123,7 +132,9 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         while (iteratorEnemy.hasNext()){
             var enemy: Circle=iteratorEnemy.next()
             if(Circle.isColliding(enemy, player)){
+                //далить врага и снять хп
                 iteratorEnemy.remove();
+                player.setHealthPoints(player.getHealthPoints()-1)
                 continue
             }
             var iteratorMissile = missileList.iterator()
