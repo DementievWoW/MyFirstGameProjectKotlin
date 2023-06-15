@@ -1,4 +1,4 @@
-package com.example.myfirstgameprojectkotlin
+package com.example.myfirstgameprojectkotlin.gameobject
 
 import android.graphics.Canvas
 import kotlin.math.pow

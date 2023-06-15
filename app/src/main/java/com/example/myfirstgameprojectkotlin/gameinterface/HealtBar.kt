@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import androidx.core.content.ContextCompat
+import com.example.myfirstgameprojectkotlin.gameobject.Player
 
 
 //на экране отображается хп
@@ -33,7 +34,7 @@ class HealthBar(context: Context, player: Player) {
         var x: Float=player.getPositionX()
         var y: Float=player.getPositionY()
         var distanceToPlayer =30f
-        var healthPointHero : Float=player.getHealthPoints().toFloat()/Player.MAX_HEALTH_POINTS
+        var healthPointHero : Float=player.getHealthPoints().toFloat()/ Player.MAX_HEALTH_POINTS
         var borderStart = x - width/2
         var borderEnd = x+width/2
         var borderBottom = y - distanceToPlayer

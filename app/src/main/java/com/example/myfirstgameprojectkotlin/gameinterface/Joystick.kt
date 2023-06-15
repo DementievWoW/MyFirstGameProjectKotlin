@@ -1,8 +1,9 @@
-package com.example.myfirstgameprojectkotlin
+package com.example.myfirstgameprojectkotlin.gameinterface
 
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import com.example.myfirstgameprojectkotlin.Utils
 
 class Joystick(centerPositionX:Float, centerPositionY:Float,outerCircleRadius:Float,innerCircleRadius:Float ) {
     private var actuatorY: Float = 0.0f
@@ -64,7 +65,12 @@ class Joystick(centerPositionX:Float, centerPositionY:Float,outerCircleRadius:Fl
 
     fun isPressed(touchPositionX: Float, touchPositionY: Float): Boolean {
 
-        joystickCenterToTouchDistance=Utils.getDistanceBetweenPoints(outerCircleCenterPositionX,outerCircleCenterPositionY,touchPositionX, touchPositionY)
+        joystickCenterToTouchDistance= Utils.getDistanceBetweenPoints(
+            outerCircleCenterPositionX,
+            outerCircleCenterPositionY,
+            touchPositionX,
+            touchPositionY
+        )
 
 
         return joystickCenterToTouchDistance < outerCircleRadius
@@ -80,7 +86,12 @@ class Joystick(centerPositionX:Float, centerPositionY:Float,outerCircleRadius:Fl
     }
 
     fun setActuator(touchPositionX: Float, touchPositionY: Float) {
-        var deltaDistance=Utils.getDistanceBetweenPoints(outerCircleCenterPositionX,outerCircleCenterPositionY,touchPositionX,touchPositionY)
+        var deltaDistance= Utils.getDistanceBetweenPoints(
+            outerCircleCenterPositionX,
+            outerCircleCenterPositionY,
+            touchPositionX,
+            touchPositionY
+        )
         if (deltaDistance<outerCircleRadius){
             actuatorX = (touchPositionX - outerCircleCenterPositionX)/outerCircleRadius
             actuatorY = (touchPositionY - outerCircleCenterPositionY)/outerCircleRadius

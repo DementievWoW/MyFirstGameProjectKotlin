@@ -3,13 +3,22 @@ package com.example.myfirstgameprojectkotlin
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import androidx.core.content.ContextCompat
+import com.example.myfirstgameprojectkotlin.gameinterface.GameOver
+import com.example.myfirstgameprojectkotlin.gameinterface.Joystick
+import com.example.myfirstgameprojectkotlin.gameinterface.Performance
+import com.example.myfirstgameprojectkotlin.gameobject.Circle
+import com.example.myfirstgameprojectkotlin.gameobject.Enemy
+import com.example.myfirstgameprojectkotlin.gameobject.Missile
+import com.example.myfirstgameprojectkotlin.gameobject.Player
 
 class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
-    private val gameOver: GameOver
+    private var performance: Performance
+    private var gameOver: GameOver
     private var numberOfSpellsToCast: Int=0
     private var joystickPointerId: Int=0
     private val joystick: Joystick
@@ -22,12 +31,14 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         //Surface and callback
         val surfaceHolder = holder
         surfaceHolder.addCallback(this)
-        gameLoop = GameLoop(this, surfaceHolder)
+        this.gameLoop = GameLoop(this, surfaceHolder)
+
         //инициализация интерфейсов
-        gameOver = GameOver(context)
-        joystick = Joystick(475f,600f,40f,20f)
+        this.performance=Performance(context,gameLoop)
+        this.gameOver = GameOver(context)
+        this.joystick = Joystick(475f,600f,40f,20f)
         //инициализация игровых обьектов
-        player = Player(getContext(),ContextCompat.getColor(context, R.color.Player),joystick,500F,500F,30F)
+        this.player = Player(getContext(),ContextCompat.getColor(context, R.color.Player),joystick,500F,500F,30F)
         isFocusable = true
     }
 
@@ -70,15 +81,25 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
     }
 
     override fun surfaceCreated(surfaceHolder: SurfaceHolder) {
+        Log.d("Game.kotlin","surfaceCreated()")
+
+        //когда поток завершен нужно создать новый и никак иначе
+        if (gameLoop.state.equals(Thread.State.TERMINATED)){
+
+            gameLoop=GameLoop(this, holder)
+        }
         gameLoop.startLoop()
     }
 
-    override fun surfaceChanged(surfaceHolder: SurfaceHolder, i: Int, i1: Int, i2: Int) {}
-    override fun surfaceDestroyed(surfaceHolder: SurfaceHolder) {}
+    override fun surfaceChanged(surfaceHolder: SurfaceHolder, i: Int, i1: Int, i2: Int) {
+        Log.d("Game.kotlin","surfaceChanged()")
+    }
+    override fun surfaceDestroyed(surfaceHolder: SurfaceHolder) {
+        Log.d("Game.kotlin","surfaceDestroyed()")
+    }
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
-        drawUPS(canvas)
-        drawFPS(canvas)
+        performance.draw(canvas)
         joystick.draw(canvas)
         player.draw(canvas)
         for (enemy : Enemy in enemyList){
@@ -93,31 +114,18 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         }
     }
 
-    private fun drawUPS(canvas: Canvas) {
-        val averageUPS = gameLoop.averageUPS.toString()
-        val paint = Paint()
-        val color = ContextCompat.getColor(context, R.color.purple_200)
-        paint.color = color
-        paint.textSize = 50f
-        canvas.drawText("UPS: $averageUPS", 100f, 100f, paint)
-    }
-
-    private fun drawFPS(canvas: Canvas) {
-        val averageFPS = gameLoop.averageFPS.toString()
-        val paint = Paint()
-        val color = ContextCompat.getColor(context, R.color.purple_200)
-        paint.color = color
-        paint.textSize = 50f
-        canvas.drawText("FPS: $averageFPS", 100f, 200f, paint)
-    }
-
     fun update() {
+        //остановка обновления, когда игрок умер
+        if(player.getHealthPoints()<=0){
+            return
+        }
+        //обновление состояний
         joystick.update()
         player.update()
         if (Enemy.readyToSpawn()){
             enemyList.add(Enemy(context,player))
         }
-        for(enemy:Enemy in enemyList ){
+        for(enemy: Enemy in enemyList ){
                 enemy.update()
         }
         while (numberOfSpellsToCast>0){
@@ -130,7 +138,7 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
             //проверяем все взаимодействия врагов и снарядов
         var iteratorEnemy = enemyList.iterator()
         while (iteratorEnemy.hasNext()){
-            var enemy: Circle=iteratorEnemy.next()
+            var enemy: Circle =iteratorEnemy.next()
             if(Circle.isColliding(enemy, player)){
                 //далить врага и снять хп
                 iteratorEnemy.remove();
@@ -150,6 +158,10 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
 
         }
 
+    }
+
+    fun pause() {
+        gameLoop.stopLoop()
     }
 }
 

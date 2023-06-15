@@ -1,9 +1,10 @@
-package com.example.myfirstgameprojectkotlin
+package com.example.myfirstgameprojectkotlin.gameinterface
 
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import androidx.core.content.ContextCompat
+import com.example.myfirstgameprojectkotlin.R
 
 class GameOver(context: Context) {
     private var context: Context

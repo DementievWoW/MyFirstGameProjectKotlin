@@ -1,10 +1,8 @@
-package com.example.myfirstgameprojectkotlin
+package com.example.myfirstgameprojectkotlin.gameobject
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color.BLUE
 import android.graphics.Paint
-import androidx.core.content.ContextCompat
 
 abstract class Circle(context: Context,color : Int, positionX: Float, positionY: Float, radius : Float) : GameObject(positionX, positionY){
 
