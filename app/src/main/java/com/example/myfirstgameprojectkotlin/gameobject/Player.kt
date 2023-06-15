@@ -2,10 +2,12 @@ package com.example.myfirstgameprojectkotlin.gameobject
 
 import android.content.Context
 import android.graphics.Canvas
+import com.example.myfirstgameprojectkotlin.GameDisplay
 import com.example.myfirstgameprojectkotlin.GameLoop
 import com.example.myfirstgameprojectkotlin.HealthBar
 import com.example.myfirstgameprojectkotlin.Utils
 import com.example.myfirstgameprojectkotlin.gameinterface.Joystick
+import com.example.myfirstgameprojectkotlin.graphics.SpriteSVG
 
 class Player(context: Context, color:Int, joystick: Joystick, positionX: Float, positionY: Float, radius : Float)
     : Circle(context,color, positionX,positionY,radius){
@@ -16,6 +18,7 @@ class Player(context: Context, color:Int, joystick: Joystick, positionX: Float, 
     }
 
 
+    private var spriteSVG: SpriteSVG
     private var healthPoints: Int
     private var healthBar: HealthBar
     private val joystick: Joystick
@@ -39,9 +42,9 @@ class Player(context: Context, color:Int, joystick: Joystick, positionX: Float, 
         }
     }
 
- override fun draw(canvas: Canvas){
-     super.draw(canvas)
-     healthBar.draw(canvas)
+ override fun draw(canvas: Canvas, gameDisplay: GameDisplay){
+     spriteSVG.draw(canvas)
+     healthBar.draw(canvas,gameDisplay)
 }
 
     fun getHealthPoints(): Int {

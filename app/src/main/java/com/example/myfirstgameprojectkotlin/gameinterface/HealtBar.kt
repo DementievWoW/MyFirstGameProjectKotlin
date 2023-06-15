@@ -30,7 +30,7 @@ class HealthBar(context: Context, player: Player) {
 
     }
 
-    fun draw(canvas: Canvas){
+    fun draw(canvas: Canvas, gameDisplay: GameDisplay){
         var x: Float=player.getPositionX()
         var y: Float=player.getPositionY()
         var distanceToPlayer =30f
@@ -39,14 +39,24 @@ class HealthBar(context: Context, player: Player) {
         var borderEnd = x+width/2
         var borderBottom = y - distanceToPlayer
         var borderTop =borderBottom-height
-        canvas.drawRect(borderStart, borderTop, borderEnd, borderBottom, borderPaint )
+        canvas.drawRect(
+            gameDisplay.gameToDisplayCoordinatesX(borderStart),
+            gameDisplay.gameToDisplayCoordinatesY(borderTop),
+            gameDisplay.gameToDisplayCoordinatesX(borderEnd),
+            gameDisplay.gameToDisplayCoordinatesY(borderBottom),
+            borderPaint )
         var healthWidth = width- 2*margin
         var healthHeight = height -2*margin
         var healthStart = borderStart+margin
         var healthEnd = healthStart +healthWidth*healthPointHero
         var healthBottom = borderBottom-margin
         var healthTop = healthBottom - healthHeight
-        canvas.drawRect(healthStart, healthTop,healthEnd, healthBottom, healthPaint )
+        canvas.drawRect(
+            gameDisplay.gameToDisplayCoordinatesX(healthStart),
+            gameDisplay.gameToDisplayCoordinatesY(healthTop),
+            gameDisplay.gameToDisplayCoordinatesX(healthEnd),
+            gameDisplay.gameToDisplayCoordinatesY(healthBottom),
+            healthPaint )
     }
 }
 

@@ -1,13 +1,19 @@
 package com.example.myfirstgameprojectkotlin
 
+import android.app.Activity
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.hardware.display.DisplayManager
+import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Display
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import com.example.myfirstgameprojectkotlin.gameinterface.GameOver
 import com.example.myfirstgameprojectkotlin.gameinterface.Joystick
 import com.example.myfirstgameprojectkotlin.gameinterface.Performance
@@ -17,6 +23,7 @@ import com.example.myfirstgameprojectkotlin.gameobject.Missile
 import com.example.myfirstgameprojectkotlin.gameobject.Player
 
 class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
+    private lateinit var gameDisplay: GameDisplay
     private var performance: Performance
     private var gameOver: GameOver
     private var numberOfSpellsToCast: Int=0
@@ -39,6 +46,10 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         this.joystick = Joystick(475f,600f,40f,20f)
         //инициализация игровых обьектов
         this.player = Player(getContext(),ContextCompat.getColor(context, R.color.Player),joystick,500F,500F,30F)
+        //инициализируем геймдисплей и центрируем вокруг игрока
+                gameDisplay = GameDisplay(Resources.getSystem().displayMetrics.widthPixels,
+                    Resources.getSystem().displayMetrics.heightPixels,
+                    player)
         isFocusable = true
     }
 
@@ -86,7 +97,7 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         //когда поток завершен нужно создать новый и никак иначе
         if (gameLoop.state.equals(Thread.State.TERMINATED)){
 
-            gameLoop=GameLoop(this, holder)
+            gameLoop= GameLoop(this, holder)
         }
         gameLoop.startLoop()
     }
@@ -99,19 +110,21 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
     }
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
-        performance.draw(canvas)
-        joystick.draw(canvas)
-        player.draw(canvas)
+            //рисуем игровые обьекты
+        player.draw(canvas, gameDisplay)
         for (enemy : Enemy in enemyList){
-            enemy.draw(canvas)
+            enemy.draw(canvas, gameDisplay)
         }
         for(missile : Missile in missileList ){
-            missile.draw(canvas)
+            missile.draw(canvas, gameDisplay)
         }
         // если hp<=0 gameOver!
         if (player.getHealthPoints()<=0){
             gameOver.draw(canvas)
         }
+        //рисуем игровой интерфейс
+        performance.draw(canvas)
+        joystick.draw(canvas)
     }
 
     fun update() {
@@ -157,6 +170,7 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
             }
 
         }
+        gameDisplay.update()
 
     }
 

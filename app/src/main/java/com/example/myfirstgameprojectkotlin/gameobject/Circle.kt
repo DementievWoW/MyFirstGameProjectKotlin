@@ -3,6 +3,7 @@ package com.example.myfirstgameprojectkotlin.gameobject
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import com.example.myfirstgameprojectkotlin.GameDisplay
 
 abstract class Circle(context: Context,color : Int, positionX: Float, positionY: Float, radius : Float) : GameObject(positionX, positionY){
 
@@ -12,8 +13,12 @@ abstract class Circle(context: Context,color : Int, positionX: Float, positionY:
         this.radius=radius
         this.paint.color=color
     }
-    override fun draw(canvas: Canvas) {
-        canvas.drawCircle(positionX, positionY,radius,paint)
+    override fun draw(canvas: Canvas, gameDisplay: GameDisplay) {
+        canvas.drawCircle(
+            gameDisplay.gameToDisplayCoordinatesX(positionX),
+            gameDisplay.gameToDisplayCoordinatesY(positionY),
+            radius,
+            paint)
     }
 
     companion object {
