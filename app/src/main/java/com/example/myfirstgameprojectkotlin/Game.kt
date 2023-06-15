@@ -21,6 +21,7 @@ import com.example.myfirstgameprojectkotlin.gameobject.Circle
 import com.example.myfirstgameprojectkotlin.gameobject.Enemy
 import com.example.myfirstgameprojectkotlin.gameobject.Missile
 import com.example.myfirstgameprojectkotlin.gameobject.Player
+import com.example.myfirstgameprojectkotlin.graphics.SpriteSVG
 
 class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
     private lateinit var gameDisplay: GameDisplay
@@ -45,7 +46,11 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         this.gameOver = GameOver(context)
         this.joystick = Joystick(475f,600f,40f,20f)
         //инициализация игровых обьектов
-        this.player = Player(getContext(),ContextCompat.getColor(context, R.color.Player),joystick,500F,500F,30F)
+        this.player = Player(
+            getContext(),ContextCompat.getColor(context, R.color.Player),joystick,
+            500F,500F,30F, spriteSVG = SpriteSVG()
+
+        )
         //инициализируем геймдисплей и центрируем вокруг игрока
                 gameDisplay = GameDisplay(Resources.getSystem().displayMetrics.widthPixels,
                     Resources.getSystem().displayMetrics.heightPixels,

@@ -1,15 +1,14 @@
 package com.example.myfirstgameprojectkotlin.gameobject
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Canvas
-import com.example.myfirstgameprojectkotlin.GameDisplay
-import com.example.myfirstgameprojectkotlin.GameLoop
-import com.example.myfirstgameprojectkotlin.HealthBar
-import com.example.myfirstgameprojectkotlin.Utils
+import com.example.myfirstgameprojectkotlin.*
 import com.example.myfirstgameprojectkotlin.gameinterface.Joystick
-import com.example.myfirstgameprojectkotlin.graphics.Sprite
+import com.example.myfirstgameprojectkotlin.graphics.SpriteSVG
 
-class Player(context: Context, color:Int, joystick: Joystick, positionX: Float, positionY: Float, radius : Float)
+class Player(context: Context, color:Int, joystick: Joystick, positionX: Float,
+             positionY: Float, radius : Float, spriteSVG: SpriteSVG)
     : Circle(context,color, positionX,positionY,radius){
     companion object {
         const val SPEED_PIXELS_PER_SECOND =400F
@@ -17,12 +16,15 @@ class Player(context: Context, color:Int, joystick: Joystick, positionX: Float, 
         var MAX_HEALTH_POINTS: Int = 10
     }
 
-
-    private var sprite: Sprite
+    private var context: Context
+    private var spriteSVG: SpriteSVG
     private var healthPoints: Int
     private var healthBar: HealthBar
     private val joystick: Joystick
+    private var spriteID=R.drawable.maghero_7
     init{
+        this.spriteSVG=spriteSVG
+        this.context=context
         this.joystick=joystick
         this.healthBar = HealthBar(context, this)
         this.healthPoints = MAX_HEALTH_POINTS
@@ -43,7 +45,7 @@ class Player(context: Context, color:Int, joystick: Joystick, positionX: Float, 
     }
 
  override fun draw(canvas: Canvas, gameDisplay: GameDisplay){
-     sprite.draw(canvas)
+     spriteSVG.draw(this.context, canvas, spriteID)
      healthBar.draw(canvas,gameDisplay)
 }
 
