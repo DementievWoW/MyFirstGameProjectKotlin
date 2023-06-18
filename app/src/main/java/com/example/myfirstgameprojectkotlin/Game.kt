@@ -16,12 +16,11 @@ import com.example.myfirstgameprojectkotlin.gameobject.Enemy
 import com.example.myfirstgameprojectkotlin.gameobject.Missile
 import com.example.myfirstgameprojectkotlin.gameobject.Player
 import com.example.myfirstgameprojectkotlin.graphics.Animator
-import com.example.myfirstgameprojectkotlin.graphics.Sprite
 import com.example.myfirstgameprojectkotlin.graphics.SpriteSheet
 import com.example.myfirstgameprojectkotlin.map.Tilemap
 
 class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
-    private var animator: Animator
+//    private var animator: Animator
     private var tilemap: Tilemap
     private val spriteSheet: SpriteSheet
     private var gameDisplay: GameDisplay
@@ -47,12 +46,13 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         this.joystick = Joystick(475f,600f,40f,20f)
         //инициализация игровых обьектов
         this.spriteSheet=SpriteSheet(context)
-        animator = Animator(spriteSheet.getPlayerSpriteArray())
+//        animator = Animator(spriteSheet.getPlayerSpriteArray())
         this.player = Player(
-            getContext(),ContextCompat.getColor(context, R.color.Player),joystick,
-            500F,500F,32F, animator
+            getContext(),joystick,ContextCompat.getColor(context, R.color.Player),
+//            500F,500F,32F, animator
+            600F,600F,64F, spriteSheet.getPlayerSprite())
 
-        )
+
         //инициализируем геймдисплей и центрируем вокруг игрока
                 gameDisplay = GameDisplay(Resources.getSystem().displayMetrics.widthPixels,
                     Resources.getSystem().displayMetrics.heightPixels,

@@ -10,10 +10,10 @@ open class MapLayout {
 
     companion object{
 
-        var TILE_WIDTH_PIXELS=64
-        var TILE_HEIGHT_PIXELS=64
-        var NUMBER_OF_ROW_TILE=60
-        var NUMBER_OF_COLUMN_TILE=60
+        var TILE_WIDTH_PIXELS=128
+        var TILE_HEIGHT_PIXELS=128
+        var NUMBER_OF_ROW_TILE=40
+        var NUMBER_OF_COLUMN_TILE=40
 
     }
 
@@ -26,7 +26,7 @@ open class MapLayout {
 
     private fun initializeLayout() {
 
-    layout = Array(60) { Array(60) { 0 } }
+    layout = Array(40) { Array(40) { 0 } }
     }
 }
 
