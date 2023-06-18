@@ -8,10 +8,10 @@ import kotlin.math.sqrt
 abstract class GameObject( positionX : Float, positionY: Float,) {
     protected var directionXinGame : Float = 1.0f
     protected var directionYinGame : Float = 1.0f
-    protected var positionX : Float = 0.0f
-    protected var positionY : Float = 0.0f
-    protected var velocityY : Float = 0.0f
-    protected var velocityX : Float = 0.0f
+    var positionX : Float = 0.0f
+    var positionY : Float = 0.0f
+    var velocityY : Float = 0.0f
+    var velocityX : Float = 0.0f
     init {
         this.positionX=positionX
         this.positionY=positionY

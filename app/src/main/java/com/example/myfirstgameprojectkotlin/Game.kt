@@ -1,19 +1,13 @@
 package com.example.myfirstgameprojectkotlin
 
-import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Canvas
-import android.graphics.Paint
-import android.hardware.display.DisplayManager
-import android.util.DisplayMetrics
 import android.util.Log
-import android.view.Display
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import com.example.myfirstgameprojectkotlin.gameinterface.GameOver
 import com.example.myfirstgameprojectkotlin.gameinterface.Joystick
 import com.example.myfirstgameprojectkotlin.gameinterface.Performance
@@ -21,10 +15,16 @@ import com.example.myfirstgameprojectkotlin.gameobject.Circle
 import com.example.myfirstgameprojectkotlin.gameobject.Enemy
 import com.example.myfirstgameprojectkotlin.gameobject.Missile
 import com.example.myfirstgameprojectkotlin.gameobject.Player
-import com.example.myfirstgameprojectkotlin.graphics.SpriteSVG
+import com.example.myfirstgameprojectkotlin.graphics.Animator
+import com.example.myfirstgameprojectkotlin.graphics.Sprite
+import com.example.myfirstgameprojectkotlin.graphics.SpriteSheet
+import com.example.myfirstgameprojectkotlin.map.Tilemap
 
 class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
-    private lateinit var gameDisplay: GameDisplay
+    private var animator: Animator
+    private var tilemap: Tilemap
+    private val spriteSheet: SpriteSheet
+    private var gameDisplay: GameDisplay
     private var performance: Performance
     private var gameOver: GameOver
     private var numberOfSpellsToCast: Int=0
@@ -46,15 +46,19 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
         this.gameOver = GameOver(context)
         this.joystick = Joystick(475f,600f,40f,20f)
         //инициализация игровых обьектов
+        this.spriteSheet=SpriteSheet(context)
+        animator = Animator(spriteSheet.getPlayerSpriteArray())
         this.player = Player(
             getContext(),ContextCompat.getColor(context, R.color.Player),joystick,
-            500F,500F,30F, spriteSVG = SpriteSVG()
+            500F,500F,32F, animator
 
         )
         //инициализируем геймдисплей и центрируем вокруг игрока
                 gameDisplay = GameDisplay(Resources.getSystem().displayMetrics.widthPixels,
                     Resources.getSystem().displayMetrics.heightPixels,
                     player)
+        //инициализация карты
+        tilemap= Tilemap(spriteSheet)
         isFocusable = true
     }
 
@@ -115,6 +119,8 @@ class Game(context: Context) : SurfaceView(context), SurfaceHolder.Callback {
     }
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
+            //нарисовать тайлы
+        tilemap.draw(canvas,gameDisplay)
             //рисуем игровые обьекты
         player.draw(canvas, gameDisplay)
         for (enemy : Enemy in enemyList){

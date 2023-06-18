@@ -33,7 +33,7 @@ class HealthBar(context: Context, player: Player) {
     fun draw(canvas: Canvas, gameDisplay: GameDisplay){
         var x: Float=player.getPositionX()
         var y: Float=player.getPositionY()
-        var distanceToPlayer =30f
+        var distanceToPlayer =120f
         var healthPointHero : Float=player.getHealthPoints().toFloat()/ Player.MAX_HEALTH_POINTS
         var borderStart = x - width/2
         var borderEnd = x+width/2
