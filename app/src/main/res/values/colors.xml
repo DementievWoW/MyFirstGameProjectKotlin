@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="Player">#FFFF00</color>
+    <color name="Enemy">#370000</color>
+    <color name="Missile">#FF03DAC5</color>
+    <color name="healBarBorder">#6d727c</color>
+    <color name="healBarHealth">#840000</color>
+    <color name="gameOver">#4D0500</color>
 </resources>

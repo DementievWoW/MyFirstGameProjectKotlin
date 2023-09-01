@@ -1,12 +1,13 @@
 package com.example.myfirstgameprojectkotlin
 
 import android.graphics.Canvas
+import android.util.Log
 import android.view.SurfaceHolder
 
 
 class GameLoop(private val game: Game, private val surfaceHolder: SurfaceHolder) : Thread() {
     companion object {
-        private const val MAX_UPS = 45.0
+        const val MAX_UPS = 45.0F
         private const val UPS_PERIOD = 1E+3 / MAX_UPS
     }
     private var isRunning : Boolean= false
@@ -16,11 +17,13 @@ class GameLoop(private val game: Game, private val surfaceHolder: SurfaceHolder)
         private set
 
     fun startLoop() {
+        Log.d("GameLoop.kotlin", "startLoop()")
         isRunning = true
         start()
     }
 
     override fun run() {
+        Log.d("GameLoop.kotlin", "run()")
         super.run()
         var updateCount = 0
         var frameCount = 0
@@ -72,6 +75,17 @@ class GameLoop(private val game: Game, private val surfaceHolder: SurfaceHolder)
                 frameCount = 0
                 startTime = System.currentTimeMillis()
             }
+        }
+    }
+
+    fun stopLoop() {
+        Log.d("GameLoop.kotlin", "stopLoop()")
+        isRunning=false
+        //пробуем запустить поток
+        try {
+            join()
+        }catch (e :InterruptedException){
+            e.printStackTrace()
         }
     }
 

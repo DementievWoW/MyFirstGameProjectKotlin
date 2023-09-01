@@ -7,29 +7,6 @@
     tools:context=".MainActivity"
     android:id="@+id/container">
 
-<!--    <FrameLayout-->
-<!--        android:layout_marginTop="100dp"-->
-<!--        android:id="@+id/user_interface"-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="70dp">-->
 
-<!--        <ImageButton-->
-<!--            android:layout_width="48dp"-->
-<!--            android:layout_height="48dp"-->
-<!--            android:layout_gravity="top|end"-->
-<!--            android:contentDescription="@string/buttonMenu"-->
-<!--            android:onClick="getMenu"-->
-<!--            android:src="@drawable/get_menu_icon">-->
-<!--        </ImageButton>-->
-<!--    </FrameLayout>-->
-<!--    <ImageView-->
-<!--        android:id="@+id/myHero"-->
-<!--        android:layout_width="100dp"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:contentDescription="@string/main_hero"-->
-<!--        app:srcCompat="@drawable/hero_var"-->
-
-
-<!--        />-->
 </FrameLayout>
 
