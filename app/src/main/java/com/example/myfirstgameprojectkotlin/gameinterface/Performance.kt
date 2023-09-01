@@ -4,21 +4,21 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import androidx.core.content.ContextCompat
-import com.example.myfirstgameprojectkotlin.GameLoop
+import com.example.myfirstgameprojectkotlin.GameTask
 import com.example.myfirstgameprojectkotlin.R
 
 //представления, которые выводяться для пользователя
-class Performance(context: Context, gameLoop: GameLoop) {
+class Performance(context: Context, gameTask: GameTask) {
 
     private val context: Context = context
-    private val gameLoop: GameLoop = gameLoop
+    private val gameTask: GameTask = gameTask
 
     fun draw(canvas: Canvas){
         drawUPS(canvas)
         drawFPS(canvas)
     }
     private fun drawUPS(canvas: Canvas) {
-        val averageUPS = gameLoop.averageUPS.toString()
+        val averageUPS = gameTask.averageUPS.toString()
         val paint = Paint()
         val color = ContextCompat.getColor(context, R.color.purple_200)
         paint.color = color
@@ -27,7 +27,7 @@ class Performance(context: Context, gameLoop: GameLoop) {
     }
 
     private fun drawFPS(canvas: Canvas) {
-        val averageFPS = gameLoop.averageFPS.toString()
+        val averageFPS = gameTask.averageFPS.toString()
         val paint = Paint()
         val color = ContextCompat.getColor(context, R.color.purple_200)
         paint.color = color

@@ -2,7 +2,7 @@ package com.example.myfirstgameprojectkotlin.gameobject
 
 import android.content.Context
 import androidx.core.content.ContextCompat
-import com.example.myfirstgameprojectkotlin.GameLoop
+import com.example.myfirstgameprojectkotlin.GameTask
 import com.example.myfirstgameprojectkotlin.R
 
 //Missile снаряд
@@ -18,7 +18,7 @@ class Missile(context: Context, color:Int, missileCaster: Player, positionX: Flo
     )
 companion object{
     private const val SPEED_PIXELS_PER_SECOND =900F
-    private const val MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS
+    private const val MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameTask.MAX_UPS
 }
 
     private var missileCaster : Player

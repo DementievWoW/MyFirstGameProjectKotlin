@@ -5,15 +5,18 @@ import android.util.Log
 import android.view.SurfaceHolder
 
 
-class GameLoop(private val game: Game, private val surfaceHolder: SurfaceHolder) : Thread() {
+class GameTask(private val gameView: GameView, private val surfaceHolder: SurfaceHolder) :
+    Thread() {
+
     companion object {
         const val MAX_UPS = 45.0F
         private const val UPS_PERIOD = 1E+3 / MAX_UPS
     }
-    private var isRunning : Boolean= false
-    var averageUPS : Double = 0.0
+
+    private var isRunning: Boolean = false
+    var averageUPS: Double = 0.0
         private set
-    var averageFPS : Double = 0.0
+    var averageFPS: Double = 0.0
         private set
 
     fun startLoop() {
@@ -27,18 +30,17 @@ class GameLoop(private val game: Game, private val surfaceHolder: SurfaceHolder)
         super.run()
         var updateCount = 0
         var frameCount = 0
-        var startTime: Long
+        var startTime: Long=System.currentTimeMillis()
         var elapsedTime: Long
         var sleepTime: Long
         var canvas: Canvas? = null
-        startTime = System.currentTimeMillis()
         while (isRunning) {
             try {
                 canvas = surfaceHolder.lockCanvas()
                 synchronized(surfaceHolder) {
-                    game.update()
+                    gameView.update()
                     updateCount++
-                    game.draw(canvas)
+                    gameView.draw(canvas)
                 }
             } catch (e: IllegalArgumentException) {
                 e.printStackTrace()
@@ -62,7 +64,7 @@ class GameLoop(private val game: Game, private val surfaceHolder: SurfaceHolder)
                 }
             }
             while (sleepTime < 0 && updateCount < MAX_UPS - 1) {
-                game.update()
+                gameView.update()
                 updateCount++
                 elapsedTime = System.currentTimeMillis() - startTime
                 sleepTime = (updateCount * UPS_PERIOD - elapsedTime).toLong()
@@ -80,14 +82,13 @@ class GameLoop(private val game: Game, private val surfaceHolder: SurfaceHolder)
 
     fun stopLoop() {
         Log.d("GameLoop.kotlin", "stopLoop()")
-        isRunning=false
+        isRunning = false
         //пробуем запустить поток
         try {
-            join()
-        }catch (e :InterruptedException){
+            join() // не останавливает поток, а ждёт его выполнения
+            interrupt() // говорит потоку остановиться, но не гаранирует мгновенной остановки
+        } catch (e: InterruptedException) {
             e.printStackTrace()
         }
     }
-
-
 }

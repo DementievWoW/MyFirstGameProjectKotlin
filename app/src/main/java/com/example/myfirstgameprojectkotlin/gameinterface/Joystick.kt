@@ -5,7 +5,12 @@ import android.graphics.Color
 import android.graphics.Paint
 import com.example.myfirstgameprojectkotlin.Utils
 
-class Joystick(centerPositionX:Float, centerPositionY:Float,outerCircleRadius:Float,innerCircleRadius:Float ) {
+class Joystick(
+    centerPositionX: Float = 475f,
+    centerPositionY: Float = 600f,
+    outerCircleRadius: Float = 40f,
+    innerCircleRadius: Float = 20f
+) {
     private var actuatorY: Float = 0.0f
     private var actuatorX: Float = 0.0f
     private var joystickCenterToTouchDistance: Float = 0.0f
@@ -17,18 +22,18 @@ class Joystick(centerPositionX:Float, centerPositionY:Float,outerCircleRadius:Fl
     private var innerCircleCenterPositionX: Float
     private var outerCircleCenterPositionY: Float
     private var outerCircleCenterPositionX: Float
-    private var isPressed:Boolean = false
+    private var isPressed: Boolean = false
 
     init {
-        outerCircleCenterPositionX=centerPositionX
-        outerCircleCenterPositionY=centerPositionY
-        innerCircleCenterPositionX=centerPositionX
-        innerCircleCenterPositionY=centerPositionY
+        outerCircleCenterPositionX = centerPositionX
+        outerCircleCenterPositionY = centerPositionY
+        innerCircleCenterPositionX = centerPositionX
+        innerCircleCenterPositionY = centerPositionY
         this.outerCircleRadius = outerCircleRadius
         this.innerCircleRadius = innerCircleRadius
 
-        outerCirclePaint= Paint();
-        innerCirclePaint= Paint();
+        outerCirclePaint = Paint();
+        innerCirclePaint = Paint();
 
         outerCirclePaint.color = Color.GRAY
         outerCirclePaint.style = Paint.Style.FILL_AND_STROKE
@@ -38,6 +43,7 @@ class Joystick(centerPositionX:Float, centerPositionY:Float,outerCircleRadius:Fl
         innerCirclePaint.style = Paint.Style.FILL_AND_STROKE
 
     }
+
     fun draw(canvas: Canvas) {
 
         canvas.drawCircle(
@@ -59,13 +65,13 @@ class Joystick(centerPositionX:Float, centerPositionY:Float,outerCircleRadius:Fl
     }
 
     private fun updateInnerCirclePosition() {
-        innerCircleCenterPositionX=(outerCircleCenterPositionX+actuatorX*outerCircleRadius)
-        innerCircleCenterPositionY=(outerCircleCenterPositionY+actuatorY*outerCircleRadius)
+        innerCircleCenterPositionX = (outerCircleCenterPositionX + actuatorX * outerCircleRadius)
+        innerCircleCenterPositionY = (outerCircleCenterPositionY + actuatorY * outerCircleRadius)
     }
 
     fun isPressed(touchPositionX: Float, touchPositionY: Float): Boolean {
 
-        joystickCenterToTouchDistance= Utils.getDistanceBetweenPoints(
+        joystickCenterToTouchDistance = Utils.getDistanceBetweenPoints(
             outerCircleCenterPositionX,
             outerCircleCenterPositionY,
             touchPositionX,
@@ -78,33 +84,33 @@ class Joystick(centerPositionX:Float, centerPositionY:Float,outerCircleRadius:Fl
 
 
     fun setIsPressed(isPressed: Boolean) {
-        this.isPressed=isPressed
+        this.isPressed = isPressed
     }
 
     fun getIsPressed(): Boolean {
-    return isPressed
+        return isPressed
     }
 
     fun setActuator(touchPositionX: Float, touchPositionY: Float) {
-        var deltaDistance= Utils.getDistanceBetweenPoints(
+        var deltaDistance = Utils.getDistanceBetweenPoints(
             outerCircleCenterPositionX,
             outerCircleCenterPositionY,
             touchPositionX,
             touchPositionY
         )
-        if (deltaDistance<outerCircleRadius){
-            actuatorX = (touchPositionX - outerCircleCenterPositionX)/outerCircleRadius
-            actuatorY = (touchPositionY - outerCircleCenterPositionY)/outerCircleRadius
-        }else{
-            actuatorX = (touchPositionX - outerCircleCenterPositionX)/deltaDistance
-            actuatorY = (touchPositionY - outerCircleCenterPositionY)/deltaDistance
+        if (deltaDistance < outerCircleRadius) {
+            actuatorX = (touchPositionX - outerCircleCenterPositionX) / outerCircleRadius
+            actuatorY = (touchPositionY - outerCircleCenterPositionY) / outerCircleRadius
+        } else {
+            actuatorX = (touchPositionX - outerCircleCenterPositionX) / deltaDistance
+            actuatorY = (touchPositionY - outerCircleCenterPositionY) / deltaDistance
         }
 
     }
 
     fun resetActuator() {
-        actuatorX=0.0f
-        actuatorY=0.0f
+        actuatorX = 0.0f
+        actuatorY = 0.0f
     }
 
     fun getActuatorX(): Float {
